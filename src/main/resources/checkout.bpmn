@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                   xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                   xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                   xmlns:drools="http://www.jboss.org/drools"
+                   id="CheckoutDefinitions"
+                   targetNamespace="http://www.example.com/checkout">
+
+  <bpmn2:process id="checkout" name="Checkout Process" isExecutable="true">
+
+    <bpmn2:startEvent id="StartEvent" name="Start">
+      <bpmn2:outgoing>flow1</bpmn2:outgoing>
+    </bpmn2:startEvent>
+
+    <bpmn2:sequenceFlow id="flow1" sourceRef="StartEvent" targetRef="ValidateCart"/>
+
+    <bpmn2:serviceTask id="ValidateCart" name="Validate Cart">
+      <bpmn2:extensionElements><drools:taskName>validateCart</drools:taskName></bpmn2:extensionElements>
+      <bpmn2:incoming>flow1</bpmn2:incoming>
+      <bpmn2:outgoing>flow2</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+
+    <bpmn2:sequenceFlow id="flow2" sourceRef="ValidateCart" targetRef="ReserveInventory"/>
+
+    <bpmn2:serviceTask id="ReserveInventory" name="Reserve Inventory">
+      <bpmn2:extensionElements><drools:taskName>reserveInventory</drools:taskName></bpmn2:extensionElements>
+      <bpmn2:incoming>flow2</bpmn2:incoming>
+      <bpmn2:outgoing>flow3</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+
+    <bpmn2:sequenceFlow id="flow3" sourceRef="ReserveInventory" targetRef="CalcShipping"/>
+
+    <bpmn2:serviceTask id="CalcShipping" name="Calculate Shipping">
+      <bpmn2:extensionElements><drools:taskName>calculateShipping</drools:taskName></bpmn2:extensionElements>
+      <bpmn2:incoming>flow3</bpmn2:incoming>
+      <bpmn2:outgoing>flow4</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+
+    <bpmn2:sequenceFlow id="flow4" sourceRef="CalcShipping" targetRef="Payment"/>
+
+    <bpmn2:serviceTask id="Payment" name="Process Payment">
+      <bpmn2:extensionElements><drools:taskName>processPayment</drools:taskName></bpmn2:extensionElements>
+      <bpmn2:incoming>flow4</bpmn2:incoming>
+      <bpmn2:outgoing>flow5</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+
+    <bpmn2:sequenceFlow id="flow5" sourceRef="Payment" targetRef="CreateOrder"/>
+
+    <bpmn2:serviceTask id="CreateOrder" name="Create Order">
+      <bpmn2:extensionElements><drools:taskName>createOrder</drools:taskName></bpmn2:extensionElements>
+      <bpmn2:incoming>flow5</bpmn2:incoming>
+      <bpmn2:outgoing>flow6</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+
+    <bpmn2:sequenceFlow id="flow6" sourceRef="CreateOrder" targetRef="SendConfirmation"/>
+
+    <bpmn2:serviceTask id="SendConfirmation" name="Send Confirmation">
+      <bpmn2:extensionElements><drools:taskName>sendConfirmation</drools:taskName></bpmn2:extensionElements>
+      <bpmn2:incoming>flow6</bpmn2:incoming>
+      <bpmn2:outgoing>flow7</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+
+    <bpmn2:sequenceFlow id="flow7" sourceRef="SendConfirmation" targetRef="EndEvent"/>
+
+    <bpmn2:endEvent id="EndEvent" name="Checkout Completed">
+      <bpmn2:incoming>flow7</bpmn2:incoming>
+    </bpmn2:endEvent>
+
+  </bpmn2:process>
+</bpmn2:definitions>
