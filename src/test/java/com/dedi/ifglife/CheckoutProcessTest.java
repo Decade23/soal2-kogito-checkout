@@ -38,7 +38,10 @@ public class CheckoutProcessTest {
         params.put("checkoutRequest", req);
         params.put("checkoutResponse", resp);
 
-        ProcessInstance<?> pi = checkout.createInstance(params);
+        org.kie.kogito.Model model = (org.kie.kogito.Model) checkout.createModel();
+        model.fromMap(params);
+
+        ProcessInstance<?> pi = checkout.createInstance(model);
         pi.start();
 
         assertEquals(ProcessInstance.STATE_COMPLETED, pi.status());

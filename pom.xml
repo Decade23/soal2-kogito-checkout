@@ -7,7 +7,9 @@
 
     <properties>
         <compiler-plugin.version>3.14.1</compiler-plugin.version>
-        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
@@ -68,6 +70,7 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
+            <version>3.15.7</version>
         </dependency>
 
         <!-- Kogito Engine -->
@@ -78,13 +81,15 @@
 
         <dependency>
             <groupId>org.kie.kogito</groupId>
-            <artifactId>kogito-processes</artifactId>
+            <artifactId>kogito-quarkus-processes</artifactId>
         </dependency>
 
         <!-- TESTING -->
+        <!-- https://mvnrepository.com/artifact/org.kie.kogito/kogito-quarkus-test-utils -->
         <dependency>
             <groupId>org.kie.kogito</groupId>
-            <artifactId>kogito-test-utils</artifactId>
+            <artifactId>kogito-quarkus-test-utils</artifactId>
+            <version>10.1.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -121,7 +126,6 @@
                     <argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
                     <systemPropertyVariables>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                        <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -141,7 +145,6 @@
                     <systemPropertyVariables>
                         <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                        <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
